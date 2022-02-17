@@ -1,0 +1,63 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Scenes/Character.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scenes/SceneController.gd" type="Script" id=2]
+
+[node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Character1" parent="." instance=ExtResource( 1 )]
+position = Vector2( 235, 287 )
+
+[node name="Character2" parent="." instance=ExtResource( 1 )]
+position = Vector2( 565, 69 )
+
+[node name="Character3" parent="." instance=ExtResource( 1 )]
+position = Vector2( 851, 281 )
+
+[node name="AcceptPathMenu" type="HBoxContainer" parent="."]
+visible = false
+anchor_top = 0.85
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -20.0
+mouse_filter = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ChooseChar" type="Button" parent="AcceptPathMenu"]
+margin_right = 338.0
+margin_bottom = 110.0
+size_flags_horizontal = 3
+text = "Choose Different Character"
+
+[node name="NewPath" type="Button" parent="AcceptPathMenu"]
+margin_left = 342.0
+margin_right = 681.0
+margin_bottom = 110.0
+size_flags_horizontal = 3
+text = "Make New Path"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AcceptPath" type="Button" parent="AcceptPathMenu"]
+margin_left = 685.0
+margin_right = 1024.0
+margin_bottom = 110.0
+size_flags_horizontal = 3
+text = "Accept Current Path"
+
+[connection signal="mouse_entered" from="Character1" to="." method="_on_Character1_mouse_entered"]
+[connection signal="mouse_entered" from="Character2" to="." method="_on_Character2_mouse_entered"]
+[connection signal="mouse_entered" from="Character3" to="." method="_on_Character3_mouse_entered"]
+[connection signal="button_up" from="AcceptPathMenu/ChooseChar" to="." method="_on_ChooseChar_button_up"]
+[connection signal="button_up" from="AcceptPathMenu/NewPath" to="." method="_on_NewPath_button_up"]
+[connection signal="button_up" from="AcceptPathMenu/AcceptPath" to="." method="_on_AcceptPath_button_up"]

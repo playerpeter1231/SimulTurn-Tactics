@@ -1,21 +1,26 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Scripts/DragLine.gd" type="Script" id=1]
 [ext_resource path="res://icon.png" type="Texture" id=2]
 [ext_resource path="res://Scenes/DrawRange.gd" type="Script" id=3]
 
-[node name="Node2D" type="Node2D"]
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 31.5, 31.5 )
+
+[node name="Character" type="Area2D"]
 script = ExtResource( 3 )
 clicked_color = Color( 1, 1, 1, 1 )
-released_color = Color( 1, 1, 1, 0 )
+released_color = Color( 0.823529, 0.231373, 0.231373, 1 )
 
 [node name="Line2D" type="Line2D" parent="."]
 default_color = Color( 0.964706, 0.94902, 0.529412, 1 )
 round_precision = 16
 antialiased = true
 script = ExtResource( 1 )
-max_length = 150
+max_length = 500
 
 [node name="Sprite" type="Sprite" parent="Line2D"]
-position = Vector2( 250, 250 )
 texture = ExtResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )

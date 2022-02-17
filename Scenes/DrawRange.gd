@@ -4,26 +4,37 @@ export(Color) var clicked_color
 export(Color) var released_color
 export(Color) var curr_color = "00ffffff"
 var radius
-var is_moving = false
+var is_active = false
+var is_drawing = false
 
-func _process(_delta):
+
+func init_path():
+	curr_color = clicked_color
+	$Line2D.init_line()
+	is_active = true
+	update()
+
+# Calculates points to draw char path and updates the draw function
+func draw_path():
+	
 	if Input.is_action_just_pressed("click"):
-		is_moving = true
-		curr_color = clicked_color
-		print("Should see a circle")
+		is_drawing = true
+	
+	if is_drawing and Input.is_action_pressed("click"):
+		$Line2D.calc_line()
 		update()
 	
-	if Input.is_action_pressed("click"):
-		update()
-	
-	if Input.is_action_just_released("click"):
+	if is_drawing and Input.is_action_just_released("click"):
 		curr_color = released_color
-		
+		update()
+		#curr_state = sstates.ACCEPTING_PATH
+
+func accept_path():
+	pass
 
 func _draw():
-	print(is_moving)
-	if is_moving:
+	if is_active:
 		radius = $Line2D.max_length - $Line2D.line_length
-		print(radius)
-		print($Line2D.line_length)
+		
+		# draw_arc( position, radius, start_arc, end_arc, point_count, circ_color, line_width, anti-alias)
 		draw_arc($Line2D.last_point, radius, 0, TAU, 64, curr_color, 4, true)
