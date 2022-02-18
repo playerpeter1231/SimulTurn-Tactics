@@ -26,7 +26,7 @@ anchor_top = 0.85
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_top = -20.0
-mouse_filter = 0
+mouse_filter = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -54,6 +54,9 @@ margin_bottom = 110.0
 size_flags_horizontal = 3
 text = "Accept Current Path"
 
+[connection signal="mouse_entered" from="Character1" to="." method="_on_Character1_mouse_entered"]
+[connection signal="mouse_entered" from="Character2" to="." method="_on_Character2_mouse_entered"]
+[connection signal="mouse_entered" from="Character3" to="." method="_on_Character3_mouse_entered"]
 [connection signal="button_up" from="AcceptPathMenu/ChooseChar" to="." method="_on_ChooseChar_button_up"]
 [connection signal="button_up" from="AcceptPathMenu/NewPath" to="." method="_on_NewPath_button_up"]
 [connection signal="button_up" from="AcceptPathMenu/AcceptPath" to="." method="_on_AcceptPath_button_up"]

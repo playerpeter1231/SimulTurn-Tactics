@@ -46,7 +46,7 @@ func handle_choice(character):
 
 func _on_Character1_mouse_entered():
 	print("You found me! 1")
-	print(self.name)
+	print(self.get_name())
 	handle_choice(self)
 
 
