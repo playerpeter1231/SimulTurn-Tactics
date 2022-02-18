@@ -7,8 +7,8 @@ export var max_length = 15
 # How long to wait before adding new point to reduce cpu load
 export var step_length = 10
 var line_length = 0
-onready var first_pos = get_global_position()
-var last_point
+var first_pos
+var last_point = Vector2(0,0)
 var is_hovered = false
 
 
@@ -25,7 +25,7 @@ export(NodePath) var path2d_node_location = "Character"
 onready var path_node = get_node(path2d_node_location)
 export(NodePath) var followpath_node_location = "Character/PathFollow2D"
 onready var follow_node = get_node(followpath_node_location)
-export(float) var char_speed = 50
+export(float) var char_speed = 150
 
 
 func init_player_line():
@@ -34,22 +34,31 @@ func init_player_line():
 	update()
 	
 #	Initiate line
-	clear_points()
-	last_point = Vector2(0,0)
+	first_pos = get_global_position()
+	#print("last point @ init_player_line(), ", last_point)
 	add_point(last_point)
-	$Cursor.position = last_point
-	$Character.position = last_point
+	
+	#$Cursor.position = last_point
+	#$Character.position = last_point
+	#print("Cursor location @ init_player_line() ", $Cursor.position)
+	#print("Character location @ init_player_line() ", $Character.position)
 	line_length = 0
+	
+	if path_node.curve:
+		path_node.curve = Curve2D.new()
 
 
 func init_path():
 	var curve2d = Curve2D.new()
+	follow_node.unit_offset = 0
+	follow_node.offset = 0
 	
 	for i in points.size():
 		#print("Adding, ", points[i])
 		curve2d.add_point(points[i])
 	
 	path_node.curve = curve2d
+	add_to_group("MovingCharacters")
 
 
 # Calculates points to draw char path and updates the draw function
@@ -96,22 +105,30 @@ func calc_line():
 			
 				# Set last_point to be called in DrawRange as circle origin
 				last_point = relative_pos
+				#print("Last point in calc, ", last_point)
+
+# Transition line to showing previous move instead of current
+func finish_line():
+	if points:
+		$LastTurnTrail.points = points
+		clear_points()
 
 
 func delete_line():
-	clear_points()
-	last_point = Vector2(0,0)
-	add_point(last_point)
 	$Cursor.position = last_point
 	$Character.position = last_point
 	curr_color = "00ffffff"
 	
 
 func follow_path(delta):
-	print("Offset, ", follow_node.offset)
-	follow_node.set_offset(follow_node.get_offset() + char_speed * delta)
-	
-	$Character/CharData.position = follow_node.position
+	if path_node.curve:
+		#print("Unit_offset @ moving, ", follow_node.unit_offset)
+		if follow_node.unit_offset != 1:
+			follow_node.offset += char_speed * delta
+		else:
+			#print("Character is done moving")
+			remove_from_group("MovingCharacters")
+		#$Character/PathFollow2D/CharData.position = follow_node.position
 	
 func _draw():
 	if is_active:
@@ -130,4 +147,5 @@ func _on_Cursor_mouse_entered():
 
 
 func _on_Cursor_mouse_exited():
+	print("Cursor is false")
 	is_hovered = false
