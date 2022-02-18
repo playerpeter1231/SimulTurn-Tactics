@@ -9,27 +9,20 @@ enum sstates {
 }
 var curr_state = sstates.NOTHING_PRESSED
 
-var curr_char
+var curr_char = null
 
 func _process(_delta):
 	match curr_state:
 		sstates.NOTHING_PRESSED:
-			if Input.is_action_just_released("click"):
-				if curr_char:
-					print("Curr character, ",curr_char.name)
-			
-			if Input.is_action_just_pressed("open_menu"):
-				#print("Changing state to choosing path")
-				
-				$Character1.init_path()
+			if Input.is_action_just_released("click") and curr_char:
+				curr_char.init_path()
 				curr_state = sstates.CHOOSING_PATH
 		
 		sstates.CHOOSING_PATH:
+			curr_char.draw_path()
 			
-			$Character1.draw_path()
-			
-			if $Character1.is_drawing and Input.is_action_just_released("click"):
-				$Character1.is_drawing = false
+			if curr_char.is_drawing and Input.is_action_just_released("click"):
+				curr_char.is_drawing = false
 				curr_state = sstates.ACCEPTING_PATH
 				
 			if Input.is_action_just_pressed("open_menu"):
@@ -45,30 +38,32 @@ func handle_choice(character):
 
 
 func _on_Character1_mouse_entered():
-	print("You found me! 1")
-	print(self.get_name())
-	handle_choice(self)
+	handle_choice($Character1)
 
 
 func _on_Character2_mouse_entered():
-	handle_choice(self)
+	handle_choice($Character2)
 
 
 func _on_Character3_mouse_entered():
-	handle_choice(self)
+	handle_choice($Character3)
 	
 
 func _on_ChooseChar_button_up():
-	pass # Replace with function body.
+	curr_char.delete_line()
+	curr_char = null
+	curr_state = sstates.NOTHING_PRESSED
 
 
 func _on_NewPath_button_up():
-	$Character1.init_path()
+	curr_char.init_path()
 	curr_state = sstates.CHOOSING_PATH
 	$AcceptPathMenu.visible = false
 
 
 func _on_AcceptPath_button_up():
+	curr_char.keep_line()
+	curr_char = null
 	curr_state = sstates.NOTHING_PRESSED
 
 

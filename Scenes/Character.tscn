@@ -1,16 +1,18 @@
 [gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Scripts/DragLine.gd" type="Script" id=1]
-[ext_resource path="res://icon.png" type="Texture" id=2]
-[ext_resource path="res://Scripts/Character.gd" type="Script" id=3]
+[ext_resource path="res://Textures/icon.png" type="Texture" id=2]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 48.7647
 
 [sub_resource type="Curve2D" id=2]
 _data = {
 "points": PoolVector2Array(  )
 }
 
-[sub_resource type="CircleShape2D" id=1]
-radius = 48.7647
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 31, 29.5 )
 
 [node name="Line2D" type="Line2D"]
 default_color = Color( 0.964706, 0.94902, 0.529412, 1 )
@@ -18,19 +20,27 @@ round_precision = 16
 antialiased = true
 script = ExtResource( 1 )
 max_length = 500
+clicked_color = Color( 1, 1, 1, 1 )
+released_color = Color( 0.580392, 0.580392, 0.580392, 1 )
+
+[node name="Cursor" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Cursor"]
+shape = SubResource( 1 )
 
 [node name="Character" type="Path2D" parent="."]
 curve = SubResource( 2 )
 
 [node name="PathFollow2D" type="PathFollow2D" parent="Character"]
 
-[node name="Sprite" type="Sprite" parent="Character"]
+[node name="CharData" type="Area2D" parent="Character"]
+
+[node name="Sprite" type="Sprite" parent="Character/CharData"]
 texture = ExtResource( 2 )
 
-[node name="Cursor" type="Area2D" parent="."]
-script = ExtResource( 3 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Cursor"]
-shape = SubResource( 1 )
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Character/CharData"]
+position = Vector2( 0, 0.5 )
+shape = SubResource( 3 )
 
 [connection signal="mouse_entered" from="Cursor" to="." method="_on_Cursor_mouse_entered"]
+[connection signal="mouse_exited" from="Cursor" to="." method="_on_Cursor_mouse_exited"]

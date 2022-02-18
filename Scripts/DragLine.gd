@@ -9,12 +9,15 @@ export var step_length = 10
 var line_length = 0
 onready var first_pos = get_global_position()
 var last_point
+var is_hovered = false
 
 
 export(Color) var clicked_color
 export(Color) var released_color
 export(Color) var curr_color = "00ffffff"
 var radius
+export var cursor_radius = 8
+export var cursor_size = 3
 var is_active = false
 var is_drawing = false
 
@@ -28,6 +31,7 @@ func init_path():
 	clear_points()
 	last_point = Vector2(0,0)
 	add_point(last_point)
+	$Cursor.position = last_point
 	$Character.position = last_point
 	line_length = 0
 
@@ -35,9 +39,8 @@ func init_path():
 # Calculates points to draw char path and updates the draw function
 func draw_path():
 	
-	if Input.is_action_just_pressed("click"):
-		if get_global_mouse_position().distance_to(last_point) < max_length:
-			is_drawing = true
+	if Input.is_action_just_pressed("click") and is_hovered:
+		is_drawing = true
 	
 	if is_drawing and Input.is_action_pressed("click"):
 		calc_line()
@@ -47,9 +50,7 @@ func draw_path():
 		curr_color = released_color
 		update()
 		#curr_state = sstates.ACCEPTING_PATH
-
-func accept_path():
-	pass
+		
 
 func calc_line():
 	#print("Currently calculating")
@@ -80,16 +81,36 @@ func calc_line():
 				# Set last_point to be called in DrawRange as circle origin
 				last_point = relative_pos
 
+
+func delete_line():
+	clear_points()
+	last_point = Vector2(0,0)
+	add_point(last_point)
+	$Cursor.position = last_point
+	$Character.position = last_point
+	curr_color = "00ffffff"
+	
+
+
+func keep_line():
+	pass
+
+	
 func _draw():
 	if is_active:
 		radius = max_length - line_length
 		
 		# draw_arc( position, radius, start_arc, end_arc, point_count, circ_color, line_width, anti-alias)
-		if radius > 8:
-			draw_arc(last_point, radius, 0, TAU, 64, "ffffff", 4, true)
-		draw_arc(last_point, 8, 0, TAU, 32, "ffffff",3,true)
+		if radius > cursor_radius:
+			draw_arc(last_point, radius+4, 0, TAU, 64, curr_color, 4, true)
+		draw_arc(last_point, cursor_radius, 0, TAU, 32, "ffffff", cursor_size,true)
 
 
 func _on_Cursor_mouse_entered():
 	print("Emitting signal from line2d")
+	is_hovered = true
 	emit_signal("mouse_entered")
+
+
+func _on_Cursor_mouse_exited():
+	is_hovered = false
