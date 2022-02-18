@@ -6,20 +6,25 @@ enum sstates {
 	NOTHING_PRESSED, # For when there is no option chosen
 	CHOOSING_PATH, # For when player is choosing character path
 	ACCEPTING_PATH, # For when the player is accepting path
+	WATCH_PATHS,
 }
 var curr_state = sstates.NOTHING_PRESSED
 
 var curr_char = null
 
-func _process(_delta):
+func _process(delta):
 	match curr_state:
 		sstates.NOTHING_PRESSED:
 			if Input.is_action_just_released("click") and curr_char:
-				curr_char.init_path()
+				curr_char.init_player_line()
 				curr_state = sstates.CHOOSING_PATH
 		
+			if Input.is_action_just_pressed("open_menu"):
+				$Character1.init_path()
+				print("Currently watching paths")
+				curr_state = sstates.WATCH_PATHS
 		sstates.CHOOSING_PATH:
-			curr_char.draw_path()
+			curr_char.draw_player_line()
 			
 			if curr_char.is_drawing and Input.is_action_just_released("click"):
 				curr_char.is_drawing = false
@@ -30,6 +35,9 @@ func _process(_delta):
 		
 		sstates.ACCEPTING_PATH:
 			$AcceptPathMenu.visible = true
+		
+		sstates.WATCH_PATHS:
+			$Character1.follow_path(delta)
 
 
 func handle_choice(character):
@@ -62,8 +70,5 @@ func _on_NewPath_button_up():
 
 
 func _on_AcceptPath_button_up():
-	curr_char.keep_line()
 	curr_char = null
 	curr_state = sstates.NOTHING_PRESSED
-
-

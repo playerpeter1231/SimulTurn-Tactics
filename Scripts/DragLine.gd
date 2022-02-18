@@ -21,8 +21,14 @@ export var cursor_size = 3
 var is_active = false
 var is_drawing = false
 
+export(NodePath) var path2d_node_location = "Character"
+onready var path_node = get_node(path2d_node_location)
+export(NodePath) var followpath_node_location = "Character/PathFollow2D"
+onready var follow_node = get_node(followpath_node_location)
+export(float) var char_speed = 50
 
-func init_path():
+
+func init_player_line():
 	curr_color = clicked_color
 	is_active = true
 	update()
@@ -36,8 +42,18 @@ func init_path():
 	line_length = 0
 
 
+func init_path():
+	var curve2d = Curve2D.new()
+	
+	for i in points.size():
+		#print("Adding, ", points[i])
+		curve2d.add_point(points[i])
+	
+	path_node.curve = curve2d
+
+
 # Calculates points to draw char path and updates the draw function
-func draw_path():
+func draw_player_line():
 	
 	if Input.is_action_just_pressed("click") and is_hovered:
 		is_drawing = true
@@ -91,10 +107,11 @@ func delete_line():
 	curr_color = "00ffffff"
 	
 
-
-func keep_line():
-	pass
-
+func follow_path(delta):
+	print("Offset, ", follow_node.offset)
+	follow_node.set_offset(follow_node.get_offset() + char_speed * delta)
+	
+	$Character/CharData.position = follow_node.position
 	
 func _draw():
 	if is_active:

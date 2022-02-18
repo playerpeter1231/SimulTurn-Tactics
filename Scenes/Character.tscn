@@ -32,6 +32,8 @@ shape = SubResource( 1 )
 curve = SubResource( 2 )
 
 [node name="PathFollow2D" type="PathFollow2D" parent="Character"]
+loop = false
+lookahead = 20.0
 
 [node name="CharData" type="Area2D" parent="Character"]
 
