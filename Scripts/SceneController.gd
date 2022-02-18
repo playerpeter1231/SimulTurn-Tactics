@@ -69,6 +69,6 @@ func _on_NewPath_button_up():
 
 
 func _on_AcceptPath_button_up():
-	pass # Replace with function body.
+	curr_state = sstates.NOTHING_PRESSED
 
 
