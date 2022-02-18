@@ -1,14 +1,10 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Scripts/DragLine.gd" type="Script" id=1]
 [ext_resource path="res://Textures/icon.png" type="Texture" id=2]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 48.7647
-
-[sub_resource type="Curve" id=5]
-max_value = 10.0
-_data = [ Vector2( 0, 5 ), 0.0, 0.0, 0, 0, Vector2( 0.843478, 1.02041 ), 0.0, 0.0, 0, 0 ]
 
 [sub_resource type="Curve2D" id=2]
 _data = {
@@ -33,8 +29,6 @@ released_color = Color( 0.580392, 0.580392, 0.580392, 1 )
 shape = SubResource( 1 )
 
 [node name="LastTurnTrail" type="Line2D" parent="."]
-width = 3.0
-width_curve = SubResource( 5 )
 default_color = Color( 0.972549, 0.34902, 0.333333, 1 )
 joint_mode = 2
 antialiased = true
