@@ -17,7 +17,7 @@ var curr_char = null
 func _process(_delta):
 	match curr_state:
 		sstates.CHOOSING_CHAR:
-			if Input.is_action_just_released("click") and curr_char:
+			if Input.is_action_just_released("click") and curr_char and curr_char.actions > 0:
 				curr_char.init_player_line()
 				curr_state = sstates.CHOOSING_PATH
 			
@@ -27,11 +27,9 @@ func _process(_delta):
 		sstates.CHOOSING_PATH:
 			curr_char.draw_player_line()
 			
-			if curr_char.is_drawing and Input.is_action_just_released("click"):
+			if (curr_char.is_drawing and Input.is_action_just_released("click")) or (curr_char.actions < 1):
 				curr_char.is_drawing = false
 				curr_state = sstates.ACCEPTING_PATH
-		
-	
 		
 		sstates.ACCEPTING_PATH:
 			$AcceptPathMenu.visible = true
