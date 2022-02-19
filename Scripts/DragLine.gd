@@ -14,7 +14,9 @@ var is_hovered = false
 
 export(Color) var clicked_color
 export(Color) var released_color
-export(Color) var curr_color = "00ffffff"
+export(Color) var curs_color
+var curr_radius_color = "00ffffff"
+var curr_cursor_color = curs_color
 var radius
 export var cursor_radius = 8
 export var cursor_size = 3
@@ -29,7 +31,8 @@ export(float) var char_speed = 150
 
 
 func init_player_line():
-	curr_color = clicked_color
+	curr_radius_color = clicked_color
+	curr_cursor_color = curs_color
 	is_active = true
 	update()
 	
@@ -72,7 +75,7 @@ func draw_player_line():
 		update()
 	
 	if is_drawing and Input.is_action_just_released("click"):
-		curr_color = released_color
+		curr_radius_color = released_color
 		update()
 		#curr_state = sstates.ACCEPTING_PATH
 		
@@ -117,7 +120,7 @@ func finish_line():
 func delete_line():
 	$Cursor.position = last_point
 	$Character.position = last_point
-	curr_color = "00ffffff"
+	curr_radius_color = "00ffffff"
 	
 
 func follow_path(delta):
@@ -136,8 +139,8 @@ func _draw():
 		
 		# draw_arc( position, radius, start_arc, end_arc, point_count, circ_color, line_width, anti-alias)
 		if radius > cursor_radius:
-			draw_arc(last_point, radius+4, 0, TAU, 64, curr_color, 4, true)
-		draw_arc(last_point, cursor_radius, 0, TAU, 32, "ffffff", cursor_size,true)
+			draw_arc(last_point, radius+4, 0, TAU, 64, curr_radius_color, 4, true)
+		draw_arc(last_point, cursor_radius, 0, TAU, 32, curr_cursor_color, cursor_size,true)
 
 
 func _on_Cursor_mouse_entered():

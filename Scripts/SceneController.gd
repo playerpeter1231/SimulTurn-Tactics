@@ -90,6 +90,8 @@ func _on_NewPath_button_up():
 
 func _on_AcceptPath_button_up():
 	curr_char.add_to_group("MovingCharacters")
+	curr_char.curr_cursor_color = "00ffffff"
+	curr_char.update()
 	curr_char = null
 	curr_state = sstates.CHOOSING_CHAR
 	$AcceptPathMenu.visible = false

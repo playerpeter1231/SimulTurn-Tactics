@@ -22,6 +22,7 @@ script = ExtResource( 1 )
 max_length = 500
 clicked_color = Color( 1, 1, 1, 1 )
 released_color = Color( 0.580392, 0.580392, 0.580392, 1 )
+curs_color = Color( 1, 1, 1, 1 )
 
 [node name="Cursor" type="Area2D" parent="."]
 
