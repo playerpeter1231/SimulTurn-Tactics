@@ -64,7 +64,7 @@ margin_left = 342.0
 margin_right = 681.0
 margin_bottom = 110.0
 size_flags_horizontal = 3
-text = "Make New Path"
+text = "Go Back One Step"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -76,9 +76,43 @@ margin_bottom = 110.0
 size_flags_horizontal = 3
 text = "Accept Current Path"
 
+[node name="ActionsMenu" type="VBoxContainer" parent="."]
+visible = false
+anchor_top = 0.25
+anchor_bottom = 0.75
+margin_top = -20.0
+margin_right = 40.0
+margin_bottom = 20.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button" type="Button" parent="ActionsMenu"]
+margin_right = 108.0
+margin_bottom = 110.0
+size_flags_vertical = 3
+text = "Hammer Swing"
+
+[node name="Button2" type="Button" parent="ActionsMenu"]
+margin_top = 114.0
+margin_right = 108.0
+margin_bottom = 225.0
+size_flags_vertical = 3
+text = "Single Snipe"
+
+[node name="Button3" type="Button" parent="ActionsMenu"]
+margin_top = 229.0
+margin_right = 108.0
+margin_bottom = 340.0
+size_flags_vertical = 3
+text = "Triple Shot"
+
 [connection signal="mouse_entered" from="Character1" to="." method="_on_Character1_mouse_entered"]
+[connection signal="mouse_exited" from="Character1" to="." method="_on_Character1_mouse_exited"]
 [connection signal="mouse_entered" from="Character2" to="." method="_on_Character2_mouse_entered"]
+[connection signal="mouse_exited" from="Character2" to="." method="_on_Character2_mouse_exited"]
 [connection signal="mouse_entered" from="Character3" to="." method="_on_Character3_mouse_entered"]
+[connection signal="mouse_exited" from="Character3" to="." method="_on_Character3_mouse_exited"]
 [connection signal="button_up" from="EndTurn/EndTurnButton" to="." method="_on_EndTurnButton_button_up"]
 [connection signal="button_up" from="AcceptPathMenu/ChooseChar" to="." method="_on_ChooseChar_button_up"]
 [connection signal="button_up" from="AcceptPathMenu/NewPath" to="." method="_on_NewPath_button_up"]

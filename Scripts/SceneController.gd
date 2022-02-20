@@ -13,6 +13,11 @@ export(sstates) var curr_state = sstates.CHOOSING_CHAR
 onready var all_characters = get_tree().get_nodes_in_group("Characters")
 var curr_char = null
 
+export(String) var accept_menu_path = "AcceptPathMenu"
+onready var accept_menu = get_node(accept_menu_path)
+export(String) var end_turn_menu_path = "EndTurn"
+onready var end_menu = get_node(end_turn_menu_path)
+
 
 func _process(_delta):
 	match curr_state:
@@ -32,7 +37,16 @@ func _process(_delta):
 				curr_state = sstates.ACCEPTING_PATH
 		
 		sstates.ACCEPTING_PATH:
-			$AcceptPathMenu.visible = true
+			if accept_menu:
+				accept_menu.visible = true
+				
+				if Input.is_action_just_pressed("click") and curr_char.actions > 0 and curr_char.is_hovered:
+					print("going from accepting path to choosing path")
+					accept_menu.visible = false
+					curr_char.reinit_player_line()
+					curr_state = sstates.CHOOSING_PATH
+			else:
+				print("ERROR: No accept menu during ACCEPTING_PATH")
 		
 		sstates.WATCH_PATHS:
 			# Bulk of option is in _physics_process
@@ -56,35 +70,34 @@ func reset_chars():
 		chara.finish_line()
 
 
-func handle_choice(character):
+func handle_enter(character):
+	character.is_hovered = true
 	if curr_state == sstates.CHOOSING_CHAR:
 		curr_char = character
 
 
 func _on_Character1_mouse_entered():
-	handle_choice($Character1)
+	handle_enter($Character1)
 
 
 func _on_Character2_mouse_entered():
-	handle_choice($Character2)
+	handle_enter($Character2)
 
 
 func _on_Character3_mouse_entered():
-	handle_choice($Character3)
-	
+	handle_enter($Character3)
+
 
 func _on_ChooseChar_button_up():
 	curr_char.delete_line()
 	curr_char = null
 	curr_state = sstates.CHOOSING_CHAR
-	$AcceptPathMenu.visible = false
+	if accept_menu:
+		accept_menu.visible = false
 
 
 func _on_NewPath_button_up():
-	curr_char.delete_line()
-	curr_char.init_player_line()
-	curr_state = sstates.CHOOSING_PATH
-	$AcceptPathMenu.visible = false
+	curr_char.delete_step()
 
 
 func _on_AcceptPath_button_up():
@@ -93,8 +106,13 @@ func _on_AcceptPath_button_up():
 	curr_char.update()
 	curr_char = null
 	curr_state = sstates.CHOOSING_CHAR
-	$AcceptPathMenu.visible = false
-	$EndTurn.visible = true
+	
+	if accept_menu:
+		accept_menu.visible = false
+	if end_menu:
+		end_menu.visible = true
+	else:
+		print("ERROR: No end turn menu from acceptpath_button_up")
 
 
 func _on_EndTurnButton_button_up():
@@ -102,4 +120,8 @@ func _on_EndTurnButton_button_up():
 	for chara in characters:
 		chara.init_path()
 		curr_state = sstates.WATCH_PATHS
-	$EndTurn.visible = false
+		
+	if end_menu:
+		end_menu.visible = false
+
+
