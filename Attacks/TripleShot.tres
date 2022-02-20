@@ -1,0 +1,23 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://Attacks/AttackStatsDefaults.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+attack_name = "Triple Shot"
+attack_description = "Setup states:
+Character revs machinery on backpack for 2 actions, gets minimized movement speed inbetween setup and firing, execution is 1 action fast
+
+Projectile:
+Three fire rounds that travel somewhat slowly. Shoots three projectiles 45 degrees apart total. Small damage, causes reocurring fire damage over two more turn. When on fire, reveals shows location on map.
+
+Damage:
+No additional damage from point blank because enemy will be hit by multiple shots. Burn dots stack"
+setup_cost = 2
+execute_cost = 1
+damage_amount = 1
+stuns = false
+shoots_proj = true
+proj_pierces = false
+proj_damage = 1
+places_item = false

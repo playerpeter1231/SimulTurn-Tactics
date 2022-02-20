@@ -1,0 +1,20 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://Attacks/AttackStatsDefaults.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+attack_name = "Hammer Swing"
+attack_description = "Setup states:
+Character moves hammer from one handed over shoulder to two handed overhead. Quick to transition overhead, quick attack bringing it down to the ground. Movement between setup and attack is very slow.
+
+Damage:
+Does good damage up close, and small damage from shockwave coming out in rectangle. Stuns anyone up close. Leaves difficult terrain as cracks in the ground that makes it hard to walk over for a few turns worth of time."
+setup_cost = 1
+execute_cost = 1
+damage_amount = 2
+stuns = true
+shoots_proj = false
+proj_pierces = false
+proj_damage = 0
+places_item = false

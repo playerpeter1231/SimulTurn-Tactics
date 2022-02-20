@@ -1,0 +1,23 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://Attacks/AttackStatsDefaults.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+attack_name = "Single Snipe"
+attack_description = "Setup states:
+Short setup getting into a squat position, no movement between states, medium execution time from holding breath and focusing on shot.
+
+Projectile:
+Long range, smaller bullet, fast travel-time
+
+Damage:
+Does decent damage at long range, more damage up close. Pierces when up close"
+setup_cost = 1
+execute_cost = 2
+damage_amount = 2
+stuns = false
+shoots_proj = false
+proj_pierces = false
+proj_damage = 0
+places_item = false

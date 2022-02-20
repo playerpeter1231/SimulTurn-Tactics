@@ -43,7 +43,7 @@ func init_player_line():
 	
 #	Initiate line
 	first_pos = get_global_position()
-	print("Initialize first pos", first_pos)
+	#print("Initialize first pos", first_pos)
 	#print("last point @ init_player_line(), ", last_point)
 	add_point(last_point)
 	add_point(last_point)
@@ -120,7 +120,7 @@ func calc_line():
 		
 		set_point_position(get_point_count()-1,new_point)
 		if(actions > 1):
-			print("actions, ", actions)
+			#print("actions, ", actions)
 			add_point(relative_pos)
 		else:
 			if cursor:
@@ -147,8 +147,8 @@ func delete_line():
 
 
 func delete_step():
-	actions += 1
-	if get_point_count() > 2:
+	if get_point_count() > 1:
+		actions += 1
 		remove_point(get_point_count() - 1)
 		last_point = get_point_position((get_point_count() - 1))
 		cursor.position = last_point
@@ -178,11 +178,11 @@ func _draw():
 
 
 func _on_Cursor_mouse_entered():
-	print("Emitting signal from line2d")
+	#print("Emitting signal from line2d")
 	is_hovered = true
 	emit_signal("mouse_entered")
 
 
 func _on_Cursor_mouse_exited():
-	print("Cursor is false")
+	#print("Cursor is false")
 	is_hovered = false
