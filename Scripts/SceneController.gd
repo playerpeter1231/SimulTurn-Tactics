@@ -81,6 +81,7 @@ func _on_ChooseChar_button_up():
 
 
 func _on_NewPath_button_up():
+	curr_char.delete_line()
 	curr_char.init_player_line()
 	curr_state = sstates.CHOOSING_PATH
 	$AcceptPathMenu.visible = false

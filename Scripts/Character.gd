@@ -92,8 +92,25 @@ func calc_line():
 	$Cursor.set_position(relative_pos)
 	
 	if relative_pos.distance_to(last_point) > max_length:
-		add_point(relative_pos)
-		last_point = relative_pos
+		# Extra math clamps new point to circle point
+		var cursor_angle = relative_pos.angle_to_point(last_point)
+		var cursor_x = last_point.x + (max_length * cos(cursor_angle))
+		var cursor_y = last_point.y + (max_length * sin(cursor_angle))
+		var new_point = Vector2(cursor_x,cursor_y)
+#		print("Max length,", max_length)
+#		print("Last point, ", last_point)
+#		print("Relative point, ", relative_pos)
+#		print("Angle between two points, ", cursor_angle)
+#		print("New point, ", new_point, "\n")
+		
+		set_point_position(get_point_count()-1,new_point)
+		if(actions > 1):
+			print("actions, ", actions)
+			add_point(relative_pos)
+		else:
+			$Cursor.position = new_point
+#		print("All values in points", points)
+		last_point = new_point
 		actions -= 1
 
 # Transition line to showing previous move instead of current
@@ -122,8 +139,6 @@ func follow_path(delta):
 	
 func _draw():
 	if is_active:
-		var relative_pos = get_global_mouse_position() - first_pos
-		
 		radius = max_length - line_length
 		
 		# draw_arc( position, radius, start_arc, end_arc, point_count, circ_color, line_width, anti-alias)
@@ -131,7 +146,7 @@ func _draw():
 		if radius > cursor_radius:
 			draw_arc(last_point, radius+4, 0, TAU, 64, curr_radius_color, 4, true)
 		# Draw Cursor
-		draw_arc(relative_pos, cursor_radius, 0, TAU, 32, curr_cursor_color, cursor_size,true)
+		draw_arc($Cursor.position, cursor_radius, 0, TAU, 32, curr_cursor_color, cursor_size,true)
 
 
 func _on_Cursor_mouse_entered():
